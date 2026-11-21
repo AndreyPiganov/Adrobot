@@ -1,0 +1,309 @@
+:root {
+  font-family: Inter, system-ui, sans-serif;
+  color: #1e2335;
+  background: #f4f6fa;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.container {
+  width: min(100% - 2rem, 58rem);
+  margin-inline: auto;
+}
+
+.header {
+  background: #23243f;
+  color: #fff;
+}
+
+.brand {
+  padding-block: 1rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.navigation,
+.navigation nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navigation {
+  justify-content: space-between;
+}
+
+.navigation button {
+  border-color: transparent;
+  color: #e1e1f1;
+  background: transparent;
+}
+
+.navigation button[aria-pressed="true"] {
+  border-color: #676499;
+  background: #3d3b64;
+  color: #fff;
+}
+
+.main {
+  padding-block: clamp(2rem, 7vw, 4rem);
+}
+
+h1 {
+  margin: 0 0 1.5rem;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  letter-spacing: -0.035em;
+}
+
+.panel {
+  padding: clamp(1rem, 4vw, 1.75rem);
+  border: 1px solid #dfe3ed;
+  border-radius: 0.875rem;
+  background: #fff;
+}
+
+fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+fieldset + fieldset {
+  margin-top: 1.5rem;
+}
+
+legend {
+  margin: 0 0 1.25rem;
+  padding: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: 1rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.select {
+  position: relative;
+  display: block;
+}
+
+.select::after {
+  position: absolute;
+  inset: 50% 1rem auto auto;
+  width: 0.45rem;
+  height: 0.45rem;
+  border: solid #60657c;
+  border-width: 0 2px 2px 0;
+  transform: translateY(-75%) rotate(45deg);
+  pointer-events: none;
+  content: "";
+}
+
+select,
+input,
+button {
+  font: inherit;
+}
+
+select,
+input {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #a0a8bd;
+  border-radius: 0.5rem;
+  background: #fff;
+  color: inherit;
+}
+
+select {
+  appearance: none;
+  padding-right: 2.1rem;
+}
+
+.country-code {
+  text-transform: uppercase;
+}
+
+.country-code::placeholder {
+  text-transform: none;
+}
+
+select:disabled,
+input:disabled {
+  border-color: #dfe3ed;
+  background: #f4f6fa;
+  color: #586176;
+}
+
+:focus-visible {
+  outline: 2px solid #5948bc;
+  outline-offset: 3px;
+}
+
+.status,
+.error {
+  margin: 1rem 0 0;
+  line-height: 1.5;
+}
+
+.status {
+  color: #586176;
+}
+
+.error {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  color: #922930;
+}
+
+.error p {
+  margin: 0;
+}
+
+button {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #aba2dd;
+  border-radius: 0.5rem;
+  color: #40319a;
+  background: #f2efff;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+.form-actions {
+  margin-top: 1.5rem;
+}
+
+.primary {
+  padding: 0.65rem 1rem;
+  border-color: #5142a9;
+  color: #fff;
+  background: #5142a9;
+  font-weight: 600;
+}
+
+.success {
+  margin: 0.875rem 0 0;
+  color: #225b42;
+}
+
+.campaign-lookup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.campaign-offers {
+  margin-top: 1.5rem;
+}
+
+.campaign-title,
+.flow-header,
+.flow-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.campaign-title,
+.flow-header {
+  justify-content: space-between;
+}
+
+.campaign-title h2,
+.flow-header p {
+  margin: 0;
+}
+
+.campaign-title a {
+  color: #40319a;
+}
+
+.flow {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid #dfe3ed;
+}
+
+.flow h3 {
+  margin: 0;
+}
+
+.flow-header {
+  margin-bottom: 0.75rem;
+}
+
+.flow-header p,
+.removed-offer,
+.flow small {
+  color: #586176;
+}
+
+.offer-table {
+  overflow-x: auto;
+}
+
+.flow table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.flow th,
+.flow td {
+  padding: 0.55rem 0.5rem;
+  border-bottom: 1px solid #e8ebf1;
+}
+
+.flow small {
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.share {
+  white-space: nowrap;
+}
+
+.pin {
+  margin-left: 0.4rem;
+  padding: 0.25rem 0.4rem;
+  background: #fff;
+  font-size: 0.875rem;
+}
+
+.pin[aria-pressed="true"] {
+  background: #ede9ff;
+}
+
+.flow-add,
+.flow-actions {
+  margin-top: 1rem;
+}
