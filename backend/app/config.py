@@ -16,6 +16,10 @@ class Settings(BaseSettings):
     keitaro_base_url: AnyHttpUrl | None = None
     keitaro_api_key: SecretStr | None = None
     database_url: SecretStr | None = None
+    postgres_host: str | None = None
+    postgres_db: str | None = None
+    postgres_user: str | None = None
+    postgres_password: SecretStr | None = None
 
 
 @lru_cache

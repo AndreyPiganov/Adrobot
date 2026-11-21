@@ -4,7 +4,21 @@
 
 В разделе «Офферы» загрузите кампанию по ID. Добавление, удаление и восстановление офферов пересчитывает доли в черновике. Закреплённые доли сохраняются, остальной трафик делится между активными незакреплёнными офферами. «Отправить в Keitaro» применяет черновик, «Отмена» возвращает текущие доли. PostgreSQL хранит закрепления и список ранее видимых офферов для восстановления.
 
-## Локальный запуск
+## Запуск через Docker Compose
+
+Нужен Docker с плагином Compose. Скопируйте `.env.example` в `.env`. Если `.env` уже есть, добавьте в него `POSTGRES_PASSWORD`. Задайте собственный пароль PostgreSQL. Значение с символом `$` заключите в одинарные кавычки, чтобы Compose прочитал его буквально. Для подключения к Keitaro укажите `KEITARO_BASE_URL` без пути `/admin` и заполните `KEITARO_API_KEY`.
+
+Из корня проекта запустите сборку и контейнеры.
+
+```bash
+docker compose up --build -d
+```
+
+Откройте `http://127.0.0.1:8080`. nginx раздаёт React и передаёт запросы `/api/` в FastAPI. Документация API доступна на `http://127.0.0.1:8080/docs`. Порт можно изменить через `ADROBOT_PORT` в `.env`. PostgreSQL и FastAPI доступны внутри сети Compose.
+
+Compose ждёт готовности PostgreSQL и применяет миграции Alembic перед запуском API. Данные PostgreSQL лежат в именованном томе и сохраняются после `docker compose down`.
+
+## Разработка без Docker
 
 Нужны Python 3.11+, Node.js 22.12+ и доступная база PostgreSQL.
 
@@ -32,4 +46,6 @@ npm run dev
 
 ## Миграции
 
-Миграции хранятся в `backend/alembic/versions`. При обновлении проекта примените новые миграции командой `python -m alembic -c backend/alembic.ini upgrade head` из корня репозитория. Текущую ревизию можно посмотреть командой `python -m alembic -c backend/alembic.ini current`.
+Миграции хранятся в `backend/alembic/versions`. При обновлении через Compose запустите `docker compose up --build -d`, чтобы применить новые миграции. Текущую ревизию можно посмотреть командой `docker compose exec api python -m alembic -c alembic.ini current`.
+
+При запуске без Docker примените миграции командой `python -m alembic -c backend/alembic.ini upgrade head` из корня репозитория. Текущую ревизию можно посмотреть командой `python -m alembic -c backend/alembic.ini current`.

@@ -1,0 +1,62 @@
+name: adrobot
+
+x-postgres-env: &postgres-env
+  POSTGRES_DB: ${POSTGRES_DB:-adrobot}
+  POSTGRES_USER: ${POSTGRES_USER:-adrobot}
+  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+
+services:
+  db:
+    image: postgres:17-alpine
+    environment: *postgres-env
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  migrate:
+    image: adrobot-api:local
+    pull_policy: never
+    environment:
+      <<: *postgres-env
+      POSTGRES_HOST: db
+    command: ["python", "-m", "alembic", "-c", "alembic.ini", "upgrade", "head"]
+    depends_on:
+      db:
+        condition: service_healthy
+
+  api:
+    image: adrobot-api:local
+    build: ./backend
+    environment:
+      <<: *postgres-env
+      POSTGRES_HOST: db
+      KEITARO_BASE_URL: ${KEITARO_BASE_URL:-}
+      KEITARO_API_KEY: ${KEITARO_API_KEY:-}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "from urllib.request import urlopen; urlopen('http://127.0.0.1:8000/api/health', timeout=2).close()"
+      interval: 3s
+      timeout: 3s
+      retries: 15
+
+  nginx:
+    build: ./frontend
+    ports:
+      - "127.0.0.1:${ADROBOT_PORT:-8080}:80"
+    depends_on:
+      api:
+        condition: service_healthy
+        restart: true
+
+volumes:
+  db_data:

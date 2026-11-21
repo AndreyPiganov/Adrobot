@@ -13,9 +13,23 @@ class Base(DeclarativeBase):
 
 
 def get_database_url() -> URL:
-    database_url = get_settings().database_url
+    settings = get_settings()
+    database_url = settings.database_url
     if database_url is None:
-        raise RuntimeError("Укажите DATABASE_URL в файле .env.")
+        if (
+            settings.postgres_host
+            and settings.postgres_db
+            and settings.postgres_user
+            and settings.postgres_password
+        ):
+            return URL.create(
+                "postgresql+psycopg",
+                host=settings.postgres_host,
+                database=settings.postgres_db,
+                username=settings.postgres_user,
+                password=settings.postgres_password.get_secret_value(),
+            )
+        raise RuntimeError("Укажите DATABASE_URL или параметры подключения POSTGRES_*.")
 
     try:
         url = make_url(database_url.get_secret_value())
